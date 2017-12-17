@@ -16,22 +16,37 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     let mapView = MKMapView()
     let indicatorsView = UIView()
     let locationManager = CLLocationManager()
-
+    let speedIndicator = UILabel()
+    
+    fileprivate func setupStackView() {
+        let stackView = UIStackView(arrangedSubviews: [mapView, indicatorsView])
+        stackView.frame = view.frame
+        stackView.distribution = .fillEqually
+        stackView.axis = .vertical
+        view.addSubview(stackView)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupMapView()
         setupIndicatorsView()
+    
+        speedIndicator.frame = CGRect(x: 0, y: 0, width: 500, height: 100)
         
-        //createStopButton()
+        speedIndicator.textColor = .white
+        speedIndicator.text = "????"
+        indicatorsView.addSubview(speedIndicator)
+        setupStackView()
         
         addMapTrackingButton()
         determineMyCurrentLocation()
     }
 
     fileprivate func setupIndicatorsView(){
-        indicatorsView.backgroundColor = UIColor.black
-        view.addSubview(indicatorsView)
+        indicatorsView.backgroundColor = UIColor.blue
+        indicatorsView.frame = view.frame
+
     }
     
     fileprivate func createStopButton() {
@@ -52,19 +67,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         //button.widthAnchor.constraint(equalTo: mapView.frame.width).isActive = true
     }
     
-    fileprivate func setupMapView() -> UIView{
+    fileprivate func setupMapView(){
         view.addSubview(mapView)
-        
-        mapView.translatesAutoresizingMaskIntoConstraints = false
-        
-        mapView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        mapView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        mapView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        mapView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        
+        mapView.frame = view.frame
         mapView.showsUserLocation = true
-        
-        return mapView
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -127,7 +134,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         print("user latitude = \(userLocation.coordinate.latitude)")
         print("user longitude = \(userLocation.coordinate.longitude)")
         
+        speedIndicator.text = "Speed: \(userLocation.speed). Altitude: \(userLocation.altitude)"
+
+        
         let polyLine = MKPolyline(coordinates: positions, count: positions.count)
+
         
         mapView.addOverlays([polyLine], level: MKOverlayLevel.aboveRoads)
         

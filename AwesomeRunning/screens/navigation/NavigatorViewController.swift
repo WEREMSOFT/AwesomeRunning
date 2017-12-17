@@ -16,7 +16,7 @@ class NavigationViewController: UITabBarController {
         
         tabBar.isTranslucent = false
         tabBar.clipsToBounds = true
-        viewControllers = [mapViewController, loadingController]
+        viewControllers = [mapViewController,  loadingController]
         
         
         let topLayer = CALayer()
