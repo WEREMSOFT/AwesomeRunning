@@ -1,0 +1,6 @@
+framework module Pods_AwesomeRunningTests {
+  umbrella header "Pods-AwesomeRunningTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

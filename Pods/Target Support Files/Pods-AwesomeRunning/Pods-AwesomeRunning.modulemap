@@ -1,0 +1,6 @@
+framework module Pods_AwesomeRunning {
+  umbrella header "Pods-AwesomeRunning-umbrella.h"
+
+  export *
+  module * { export * }
+}
