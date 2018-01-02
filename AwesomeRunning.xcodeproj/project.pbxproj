@@ -24,6 +24,8 @@
 		9FECC7A71FE0AFED00548CC4 /* NavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FECC7A61FE0AFED00548CC4 /* NavigatorViewController.swift */; };
 		9FECC7A91FE1BE8F00548CC4 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9FECC7A81FE1BE8F00548CC4 /* fontawesome-webfont.ttf */; };
 		9FECC7AC1FE6BF1100548CC4 /* StackViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FECC7AB1FE6BF1100548CC4 /* StackViewTest.swift */; };
+		9FECC7AF1FEB8B4C00548CC4 /* MapView3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FECC7AE1FEB8B4C00548CC4 /* MapView3D.swift */; };
+		9FECC7B11FEB93CD00548CC4 /* UserPositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FECC7B01FEB93CD00548CC4 /* UserPositions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +70,8 @@
 		9FECC7A61FE0AFED00548CC4 /* NavigatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorViewController.swift; sourceTree = "<group>"; };
 		9FECC7A81FE1BE8F00548CC4 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "fontawesome-webfont.ttf"; path = "../../../../../Downloads/font-awesome-4.7.0/fonts/fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		9FECC7AB1FE6BF1100548CC4 /* StackViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewTest.swift; sourceTree = "<group>"; };
+		9FECC7AE1FEB8B4C00548CC4 /* MapView3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView3D.swift; sourceTree = "<group>"; };
+		9FECC7B01FEB93CD00548CC4 /* UserPositions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPositions.swift; sourceTree = "<group>"; };
 		A6F86DCC85ECE438B05A536C /* Pods-AwesomeRunningUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AwesomeRunningUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AwesomeRunningUITests/Pods-AwesomeRunningUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B120D5753DEAFC83D654140C /* Pods-AwesomeRunning.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AwesomeRunning.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AwesomeRunning/Pods-AwesomeRunning.debug.xcconfig"; sourceTree = "<group>"; };
 		C44D92FA37DF5F36DEBC87D5 /* Pods_AwesomeRunning.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AwesomeRunning.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +123,7 @@
 		9F1ACB091FDE58BA00ED61A9 /* screens */ = {
 			isa = PBXGroup;
 			children = (
+				9FECC7AD1FEB8B3200548CC4 /* 3dMapView */,
 				9FECC7AA1FE6BF0400548CC4 /* stackViewTest */,
 				9FECC7A51FE0AFC700548CC4 /* navigation */,
 				9F1ACB0B1FDE58EF00ED61A9 /* map */,
@@ -138,6 +143,7 @@
 		9F1ACB0B1FDE58EF00ED61A9 /* map */ = {
 			isa = PBXGroup;
 			children = (
+				9FECC7B01FEB93CD00548CC4 /* UserPositions.swift */,
 				9F75C9F41FDA720300C880C4 /* MapViewController.swift */,
 			);
 			path = map;
@@ -214,6 +220,14 @@
 				9FECC7AB1FE6BF1100548CC4 /* StackViewTest.swift */,
 			);
 			path = stackViewTest;
+			sourceTree = "<group>";
+		};
+		9FECC7AD1FEB8B3200548CC4 /* 3dMapView */ = {
+			isa = PBXGroup;
+			children = (
+				9FECC7AE1FEB8B4C00548CC4 /* MapView3D.swift */,
+			);
+			path = 3dMapView;
 			sourceTree = "<group>";
 		};
 		C0A8C43E57F7E39A579D9C17 /* Frameworks */ = {
@@ -528,8 +542,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FECC7B11FEB93CD00548CC4 /* UserPositions.swift in Sources */,
 				9FECC7A71FE0AFED00548CC4 /* NavigatorViewController.swift in Sources */,
 				9F1ACB081FDD948500ED61A9 /* LoadViewController.swift in Sources */,
+				9FECC7AF1FEB8B4C00548CC4 /* MapView3D.swift in Sources */,
 				9F75C9F51FDA720300C880C4 /* MapViewController.swift in Sources */,
 				9F75C9FB1FDA720300C880C4 /* AwesomeRunning.xcdatamodeld in Sources */,
 				9FECC7AC1FE6BF1100548CC4 /* StackViewTest.swift in Sources */,

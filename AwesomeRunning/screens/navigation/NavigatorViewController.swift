@@ -13,10 +13,15 @@ class NavigationViewController: UITabBarController {
         
         loadingController.title = "Awesome Runner"
         loadingController.tabBarItem.image = "\u{f017}".image(nil)
+
+        let mapView3DController = MapView3D()
+        
+        mapView3DController.title = "3D Map"
+        mapView3DController.tabBarItem.image = "\u{f1b2}".image(nil)
         
         tabBar.isTranslucent = false
         tabBar.clipsToBounds = true
-        viewControllers = [mapViewController,  loadingController]
+        viewControllers = [mapViewController,  mapView3DController, loadingController]
         
         
         let topLayer = CALayer()

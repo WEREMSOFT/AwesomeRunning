@@ -13,7 +13,12 @@ extension String {
         let rect = CGRect(origin: CGPoint.zero, size: size)
         UIRectFill(CGRect(origin: CGPoint.zero, size: size))
         let fontawesome:UIFont? = UIFont(name: "FontAwesome", size: size.width * 0.7)
-        (self as NSString).draw(in: rect, withAttributes: [NSAttributedStringKey.font: fontawesome])
+        if fontawesome != nil {
+            (self as NSString).draw(in: rect, withAttributes: [NSAttributedStringKey.font: fontawesome!])
+        } else {
+            (self as NSString).draw(in: rect)
+        }
+        
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return image!

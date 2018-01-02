@@ -11,13 +11,51 @@ import MapKit
 import CoreLocation
 
 
+struct GPSInformation {
+    let latitude: Float
+    let longitude: Float
+    let elevation: Float
+}
+struct GoogleLocationInfo: Decodable  {
+    let lat: Float
+    let lng: Float
+}
+
+struct GoogleElevationResult: Decodable  {
+    let elevation: Float
+    let location: GoogleLocationInfo
+    let resolution: Float
+}
+
+struct GoogleElevationData: Decodable {
+    let results: [GoogleElevationResult]
+    let status: String
+}
+
+/*
+ {
+ "results" : [
+ {
+ "elevation" : 1608.637939453125,
+ "location" : {
+ "lat" : 39.73915360,
+ "lng" : -104.98470340
+ },
+ "resolution" : 4.771975994110107
+ }
+ ],
+ "status" : "OK"
+ }
+ */
+
+
 class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
-    var positions = [CLLocationCoordinate2D]()
     let mapView = MKMapView()
     let indicatorsView = UIView()
     let locationManager = CLLocationManager()
     let speedIndicator = UILabel()
-    
+    var pathRenderer:MKPolylineRenderer? = nil
+    var locations2D = [CLLocationCoordinate2D]()
     fileprivate func setupStackView() {
         let stackView = UIStackView(arrangedSubviews: [mapView, indicatorsView])
         stackView.frame = view.frame
@@ -31,7 +69,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         setupMapView()
         setupIndicatorsView()
-    
+        
         speedIndicator.frame = CGRect(x: 0, y: 0, width: 500, height: 100)
         
         speedIndicator.textColor = .white
@@ -42,11 +80,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         addMapTrackingButton()
         determineMyCurrentLocation()
     }
-
+    
     fileprivate func setupIndicatorsView(){
         indicatorsView.backgroundColor = UIColor.blue
         indicatorsView.frame = view.frame
-
+        
     }
     
     fileprivate func createStopButton() {
@@ -71,7 +109,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         view.addSubview(mapView)
         mapView.frame = view.frame
         mapView.showsUserLocation = true
-
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -102,7 +140,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         mapView.setRegion(region, animated: true)
         mapView.setUserTrackingMode(.follow, animated: true)
-
+        
     }
     
     func determineMyCurrentLocation() {
@@ -129,28 +167,54 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         // other wise this function will be called every time when user location changes.
         
         // manager.stopUpdatingLocation()
-        positions.append(userLocation.coordinate)
-        print("Nuber of locations \(positions.count)")
+       
+        locations2D.append(userLocation.coordinate)
+        
+        let jsonURLString = "https://maps.googleapis.com/maps/api/elevation/json?locations=\(userLocation.coordinate.latitude),\(userLocation.coordinate.longitude)&key=AIzaSyB7rLAjyLu6pKmaVMowA9JBJQMTYJBYjzQ"
+        
+        print(jsonURLString)
+        
+        guard let urlString = URL(string: jsonURLString) else { return }
+        
+        URLSession.shared.dataTask(with: urlString) { (data, response, err) in
+            guard let data = data else {return}
+            
+            do {
+                let positionResult = try JSONDecoder().decode(GoogleElevationData.self, from: data)
+                let gpsInformation = GPSInformation(latitude: positionResult.results[0].location.lat, longitude: positionResult.results[0].location.lng, elevation: positionResult.results[0].elevation)
+                 UserPositions.positions.append(gpsInformation)
+            } catch let jsonError {
+                print("Error serializing json", jsonError)
+            }
+            }.resume()
+        
+        /*print("Nuber of locations \(UserPositions.positions.count)")
         print("user latitude = \(userLocation.coordinate.latitude)")
-        print("user longitude = \(userLocation.coordinate.longitude)")
+        print("user longitude = \(userLocation.coordinate.longitude)")*/
         
-        speedIndicator.text = "Speed: \(userLocation.speed). Altitude: \(userLocation.altitude)"
-
-        
-        let polyLine = MKPolyline(coordinates: positions, count: positions.count)
-
-        
-        mapView.addOverlays([polyLine], level: MKOverlayLevel.aboveRoads)
+        speedIndicator.text = "Speed: \(userLocation.speed * 3.6). Altitude: \(userLocation.altitude)"
         
         
+        let fPolyLine = BackgroundOverlay(coordinates: locations2D, count: locations2D.count)
+        
+        mapView.addOverlays([fPolyLine], level: MKOverlayLevel.aboveRoads)
+        
+        let bPolyLine = ForegroundOverlay(coordinates: locations2D, count: locations2D.count)
+        
+        mapView.addOverlays([bPolyLine], level: MKOverlayLevel.aboveRoads)
         
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-        renderer.strokeColor = UIColor.green
-        renderer.lineWidth = 10
-        
+        if overlay is ForegroundOverlay {
+            renderer.strokeColor = UIColor(red: 230/255, green: 230/255, blue: 1, alpha: 0.5)
+            renderer.lineWidth = 10
+        } else {
+            renderer.strokeColor = UIColor(red: 0, green: 0, blue: 1, alpha: 0.5)
+            renderer.lineWidth = 30
+        }
+
         return renderer
     }
     
@@ -163,5 +227,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     {
         print("Error \(error)")
     }
+}
+
+fileprivate class ForegroundOverlay: MKPolyline{
+    
+}
+fileprivate class BackgroundOverlay: MKPolyline{
+    
 }
 
